@@ -7,12 +7,14 @@ import (
 )
 
 var (
-	ErrCreateTask = errors.New("error creating task")
+	ErrCreateTask      = errors.New("error creating task")
+	ErrFindTaskByOnwer = errors.New("error to find task by onwer")
 )
 
 type (
 	TaskRepository interface {
-		Create(task Task, ctx context.Context) (Task, error)
+		Create(Task, context.Context) (Task, error)
+		FindByOwner(string, context.Context) ([]Task, error)
 	}
 
 	ID string

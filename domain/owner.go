@@ -5,6 +5,11 @@ type (
 		id   ID
 		name string
 	}
+
+	TaskOwnerOutput struct {
+		Id   string `json:"_id"`
+		Name string `json:"name"`
+	}
 )
 
 func NewOwner(id ID, name string) *Owner {

@@ -17,18 +17,13 @@ type (
 	}
 
 	CreateTaskOutput struct {
-		Id          string          `json:"_id"`
-		Title       string          `json:"title"`
-		Description string          `json:"description"`
-		Priority    string          `json:"priority"`
-		Completed   bool            `json:"completed"`
-		Owner       TaskOwnerOutput `json:"owner"`
-		CreatedAt   string          `json:"createdAt"`
-	}
-
-	TaskOwnerOutput struct {
-		Id   string `json:"_id"`
-		Name string `json:"name"`
+		Id          string                 `json:"_id"`
+		Title       string                 `json:"title"`
+		Description string                 `json:"description"`
+		Priority    string                 `json:"priority"`
+		Completed   bool                   `json:"completed"`
+		Owner       domain.TaskOwnerOutput `json:"owner"`
+		CreatedAt   string                 `json:"created_at"`
 	}
 
 	CreateTaskUsecase interface {

@@ -32,6 +32,7 @@ func (r Routes) BuildRoutes() *mux.Router {
 	routes.HandleFunc("/v1/health", healthCheck).Methods(http.MethodGet)
 	//Task Routes
 	routes.HandleFunc("/v1/tasks", r.buildCreateTaskHandler()).Methods(http.MethodPost)
+	routes.HandleFunc("/v1/tasks/{owner_id}", r.buildFindTaskByOwnerHandler()).Methods(http.MethodGet)
 
 	return routes
 }
@@ -52,5 +53,14 @@ func (r Routes) buildCreateTaskHandler() http.HandlerFunc {
 	)
 
 	return handlers.NewCreateAccountHandler(uc).Handle
+}
 
+func (r Routes) buildFindTaskByOwnerHandler() http.HandlerFunc {
+	uc := usecase.NewTaskByOwnerContainer(
+		presenter.NewFindTaskByOnwerPresneter(),
+		repository.NewTaskRepository(r.db),
+		15*time.Second,
+	)
+
+	return handlers.NewFindTaskByOwnerHandler(uc).Handle
 }

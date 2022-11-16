@@ -20,7 +20,7 @@ func (p createTaskPresenter) Output(task domain.Task) usecase.CreateTaskOutput {
 		Description: task.Description(),
 		Priority:    task.Priority(),
 		Completed:   task.Completed(),
-		Owner: usecase.TaskOwnerOutput{
+		Owner: domain.TaskOwnerOutput{
 			Id:   task.Owner().ID().String(),
 			Name: task.Owner().Name(),
 		},
