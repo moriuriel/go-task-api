@@ -10,6 +10,7 @@ import (
 	"github.com/moriuriel/go-task-api/adapter/presenter"
 	"github.com/moriuriel/go-task-api/adapter/repository"
 	"github.com/moriuriel/go-task-api/infrastructure/database"
+	"github.com/moriuriel/go-task-api/infrastructure/providers"
 	"github.com/moriuriel/go-task-api/usecase"
 	"go.mongodb.org/mongo-driver/mongo"
 )
@@ -33,7 +34,8 @@ func (r Routes) BuildRoutes() *mux.Router {
 	//Task Routes
 	routes.HandleFunc("/v1/tasks", r.buildCreateTaskHandler()).Methods(http.MethodPost)
 	routes.HandleFunc("/v1/tasks/{owner_id}", r.buildFindTaskByOwnerHandler()).Methods(http.MethodGet)
-
+	//User Routes
+	routes.HandleFunc("/v1/users", r.buildCreateUserHandler()).Methods(http.MethodPost)
 	return routes
 }
 
@@ -63,4 +65,15 @@ func (r Routes) buildFindTaskByOwnerHandler() http.HandlerFunc {
 	)
 
 	return handlers.NewFindTaskByOwnerHandler(uc).Handle
+}
+
+func (r Routes) buildCreateUserHandler() http.HandlerFunc {
+	uc := usecase.NewUserContainer(
+		providers.NewHashProvider(),
+		presenter.NewCreateUserPresenter(),
+		repository.NewUserRepository(r.db),
+		15*time.Second,
+	)
+
+	return handlers.NewCreateUserHandler(uc).Handle
 }

@@ -21,7 +21,7 @@ type (
 
 	UserRepository interface {
 		Create(User, context.Context) (User, error)
-		FindById(string, context.Context) (User, error)
+		//FindById(string, context.Context) (User, error)
 	}
 )
 
