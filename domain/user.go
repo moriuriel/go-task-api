@@ -2,7 +2,12 @@ package domain
 
 import (
 	"context"
+	"errors"
 	"time"
+)
+
+var (
+	ErrCreateUser = errors.New("error to create user")
 )
 
 type (
