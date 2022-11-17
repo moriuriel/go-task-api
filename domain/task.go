@@ -12,13 +12,7 @@ var (
 )
 
 type (
-	TaskRepository interface {
-		Create(Task, context.Context) (Task, error)
-		FindByOwner(string, context.Context) ([]Task, error)
-	}
-
-	ID string
-
+	ID   string
 	Task struct {
 		id          ID
 		title       string
@@ -28,6 +22,10 @@ type (
 		owner       *Owner
 		completedAt time.Time
 		createdAt   time.Time
+	}
+	TaskRepository interface {
+		Create(Task, context.Context) (Task, error)
+		FindByOwner(string, context.Context) ([]Task, error)
 	}
 )
 

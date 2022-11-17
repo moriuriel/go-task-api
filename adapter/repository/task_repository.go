@@ -86,7 +86,7 @@ func (r TaskRepository) FindByOwner(id string, ctx context.Context) ([]domain.Ta
 			taskBson.Description,
 			taskBson.Priority,
 			taskBson.Completed,
-			taskBson.CompletedAt,
+			taskBson.CreatedAt,
 			domain.NewOwner(
 				domain.ID(taskBson.Owner.Id),
 				taskBson.Owner.Name,
