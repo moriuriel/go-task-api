@@ -6,6 +6,7 @@ import (
 
 	"github.com/moriuriel/go-task-api/domain"
 	"github.com/pkg/errors"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -46,4 +47,22 @@ func (r UserRepository) Create(user domain.User, ctx context.Context) (domain.Us
 	}
 
 	return user, nil
+}
+
+func (r UserRepository) FindById(id string, ctx context.Context) (domain.User, error) {
+	var user = &UserBSON{}
+
+	err := r.db.Collection(r.collection).FindOne(ctx, bson.M{"_id": id}).Decode(user)
+
+	if err != nil {
+		return domain.User{}, errors.Wrap(err, domain.ErrFindByID.Error())
+	}
+
+	return domain.NewUser(
+		domain.ID(user.Id),
+		user.Name,
+		user.Email,
+		user.Email,
+		user.CreatedAt,
+	), nil
 }

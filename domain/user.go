@@ -8,6 +8,7 @@ import (
 
 var (
 	ErrCreateUser = errors.New("error to create user")
+	ErrFindByID   = errors.New("error to find user")
 )
 
 type (
@@ -21,7 +22,7 @@ type (
 
 	UserRepository interface {
 		Create(User, context.Context) (User, error)
-		//FindById(string, context.Context) (User, error)
+		FindById(string, context.Context) (User, error)
 	}
 )
 

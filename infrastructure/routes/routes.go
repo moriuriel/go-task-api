@@ -51,6 +51,7 @@ func (r Routes) buildCreateTaskHandler() http.HandlerFunc {
 	uc := usecase.NewCreateTaskContainer(
 		presenter.NewCreateTaskPresenter(),
 		repository.NewTaskRepository(r.db),
+		repository.NewUserRepository(r.db),
 		15*time.Second,
 	)
 

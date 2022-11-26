@@ -37,14 +37,16 @@ type (
 	CreateTaskContainer struct {
 		pre        CreateTaskPresenter
 		repo       domain.TaskRepository
+		userRepo   domain.UserRepository
 		ctxTimeout time.Duration
 	}
 )
 
-func NewCreateTaskContainer(p CreateTaskPresenter, r domain.TaskRepository, t time.Duration) CreateTaskContainer {
+func NewCreateTaskContainer(p CreateTaskPresenter, r domain.TaskRepository, ur domain.UserRepository, t time.Duration) CreateTaskContainer {
 	return CreateTaskContainer{
 		pre:        p,
 		repo:       r,
+		userRepo:   ur,
 		ctxTimeout: t,
 	}
 }
@@ -55,9 +57,14 @@ func (uc CreateTaskContainer) Execute(input CreateTaskInput, ctx context.Context
 
 	taskID := primitive.NewObjectID().Hex()
 
+	user, err := uc.userRepo.FindById(input.OwnerID, ctx)
+	if err != nil {
+		return uc.pre.Output(domain.Task{}), err
+	}
+
 	owner := domain.NewOwner(
 		domain.ID(input.OwnerID),
-		"Joe Doe",
+		user.Name(),
 	)
 
 	var task = domain.NewTask(
@@ -70,7 +77,7 @@ func (uc CreateTaskContainer) Execute(input CreateTaskInput, ctx context.Context
 		owner,
 	)
 
-	task, err := uc.repo.Create(task, ctx)
+	task, err = uc.repo.Create(task, ctx)
 	if err != nil {
 		return uc.pre.Output(domain.Task{}), err
 	}
